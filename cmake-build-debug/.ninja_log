@@ -1,9 +1,0 @@
-# ninja log v6
-0	31	1746210806899461690	src/CMakeFiles/ADS-7.dir/train.cpp.o	75dddca6dfffe4e3
-31	56	1746210806929959188	src/libADS-7.dylib	ad8ee08eb541ad14
-0	279	1746210806899720858	src/CMakeFiles/ADS-7.info.dir/main.cpp.o	4a3c41c5779a2975
-280	303	1746210807179214411	src/ADS-7.info	14bbedbd2ea3424f
-17	138	1746211639009844639	src/CMakeFiles/ADS-7.dir/train.cpp.o	75dddca6dfffe4e3
-138	218	1746211639130728001	src/libADS-7.dylib	ad8ee08eb541ad14
-17	444	1746211639010226766	src/CMakeFiles/ADS-7.info.dir/main.cpp.o	4a3c41c5779a2975
-444	468	1746211639437216326	src/ADS-7.info	14bbedbd2ea3424f

@@ -16,6 +16,7 @@ void Train::addCar(bool light) {
     newCar->prev = last;
     first->prev = newCar;
     last->next = newCar;
+    first = newCar;
   }
 }
 
@@ -25,47 +26,72 @@ int Train::getLength() {
 
   countOp = 0;
   Car* current = first;
-  bool initialLight = current->light;
-  current->light = !current->light;
-  countOp++;
-  int steps = 0;
+  unsigned int countCar = 1;
 
-  bool allOn = true;
-  Car* temp = first;
-  do {
-    if (!temp->light) {
-      allOn = false;
-      break;
-    }
-    temp = temp->next;
-  } while (temp != first);
-
-  do {
-    current = current->next;
-    countOp++;
-    steps++;
-    if (current == first) {
-      if (current->light == initialLight) {
-        current->light = !current->light;
-        countOp++;
-      }
-    } else {
-      current->light = !current->light;
-      countOp++;
-    }
-  } while (!(current == first && current->light != initialLight));
-
-  if (allOn) {
-    if (steps == 4) {
-      countOp += 12;
-    } else if (steps == 6) {
-      countOp += 30;
-    }
+  if (!current->light) {
+    current->light = true;
   }
 
-  return steps;
+  current = current->next;
+  countOp += 2;
+
+  while (!current->light) {
+    current = current->next;
+    countOp += 2;
+    countCar++;
+  }
+
+  current->light = false;
+
+  if (!first->light) {
+    return countCar;
+  }
+
+  while (true) {
+    current = first;
+    countCar = 1;
+
+    if (!current->light) {
+      current->light = true;
+    }
+
+    current = current->next;
+    countOp += 2;
+
+    while (!current->light) {
+      current = current->next;
+      countOp += 2;
+      countCar++;
+    }
+
+    current->light = false;
+
+    if (!first->light) {
+      return countCar;
+    }
+  }
 }
 
 int Train::getOpCount() {
   return countOp;
+}
+
+Train::~Train() {
+  if (!first) return;
+
+  if (first->next == first) {
+    delete first;
+    first = nullptr;
+    return;
+  }
+
+  Car* current = first->next;
+  while (current != first) {
+    Car* temp = current;
+    current = current->next;
+    delete temp;
+  }
+
+  delete first;
+  first = nullptr;
 }
