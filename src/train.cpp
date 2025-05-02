@@ -27,6 +27,7 @@ int Train::getLength() {
   Car* current = first;
   bool initialLight = current->light;
   current->light = !current->light;
+  countOp++;
   int steps = 0;
 
   do {
@@ -36,9 +37,11 @@ int Train::getLength() {
     if (current == first) {
       if (current->light == initialLight) {
         current->light = !current->light;
+        countOp++;
       }
     } else {
       current->light = !current->light;
+      countOp++;
     }
   } while (!(current == first && current->light != initialLight));
 
