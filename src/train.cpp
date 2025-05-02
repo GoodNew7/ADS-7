@@ -4,67 +4,47 @@
 Train::Train() : countOp(0), first(nullptr) {}
 
 void Train::addCar(bool light) {
-  Car* car = new Car{light, nullptr, nullptr};
+  Car* newCar = new Car{light, nullptr, nullptr};
+
   if (!first) {
-    first = car;
-    first->next = first;
-    first->prev = first;
+    first = newCar;
+    newCar->next = newCar;
+    newCar->prev = newCar;
   } else {
     Car* last = first->prev;
-    last->next = car;
-    car->prev = last;
-    car->next = first;
-    first->prev = car;
+    newCar->next = first;
+    newCar->prev = last;
+    first->prev = newCar;
+    last->next = newCar;
   }
+}
+
+int Train::getLength() {
+  if (!first) return 0;
+  if (first->next == first) return 1;
+
+  countOp = 0;
+  Car* current = first;
+  bool initialLight = current->light;
+  current->light = !current->light;
+  int steps = 0;
+
+  do {
+    current = current->next;
+    countOp++;
+    steps++;
+    if (current == first) {
+      if (current->light == initialLight) {
+        current->light = !current->light;
+      }
+    } else {
+      current->light = !current->light;
+    }
+  } while (!(current == first && current->light != initialLight));
+
+  return steps;
 }
 
 int Train::getOpCount() {
   return countOp;
-}
-
-int Train::getLength() {
-  if (!first) {
-    return 0;
-  }
-  countOp = 0;
-  Car* cur = first;
-  int len = 0;
-  do {
-    if (!cur->light) {
-      cur->light = true;
-      len = 1;
-      Car* start = cur;
-      cur = cur->prev;
-      countOp++;
-      while (!cur->light && cur != start) {
-        cur = cur->prev;
-        countOp++;
-        len++;
-      }
-      cur->light = false;
-      if (cur == first && !first->light) {
-        return len;
-      }
-    } else {
-      cur = cur->prev;
-      countOp++;
-    }
-  } while (cur != first);
-  return len;
-}
-
-Train::~Train() {
-  if (!first) {
-    return;
-  }
-  Car* last = first->prev;
-  last->next = nullptr;
-  first->prev = nullptr;
-  Car* cur = first;
-  while (cur) {
-    Car* next = cur->next;
-    delete cur;
-    cur = next;
-  }
-  first = nullptr;
 }
